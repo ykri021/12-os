@@ -44,7 +44,7 @@ $(TARGET) : 	$(OBJS)
 .s.o : 			$<
 				$(CC) -c $(CFLAGS) $<
 
-$(TARGET).mot	$(TARGET)
+$(TARGET).mot :	$(TARGET)
 				$(OBJCOPY) -O srec $(TARGET) $(TARGET).mot
 
 image : 		$(TARGET).mot
