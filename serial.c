@@ -1,4 +1,4 @@
-#include "defins.h"
+#include "defines.h"
 #include "serial.h"
 
 #define SERIAL_SCI_NUM 3
