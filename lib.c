@@ -40,7 +40,7 @@ int strlen(const char *s)
     int len;
     for(len = 0; *s; s++, len++)
         ;
-    return len
+    return len;
 }
 /* strcpy関数 (文字列のコピー)を実装 */
 char *strcpy(char *dst, const char *src)
@@ -125,6 +125,6 @@ int putxval(unsigned long value, int column)
     }
     // バッファの内容を出力する
     puts(p + 1);
-    
+
     return 0;
 }
