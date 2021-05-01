@@ -8,13 +8,13 @@
 #define H8_3069F_SCI2 ((volatile struct h8_3069f_sci *) 0xffffc0)
 
 struct h8_3069f_sci {
-    volatile uint8 smr;
-    volatile uint8 brr;
-    volatile uint8 scr;
-    volatile uint8 tdr;
-    volatile uint8 ssr;
-    volatile uint8 rdr;
-    volatile uint8 scmr;
+    volatile uint8 smr;  // シリアルの通信モード設定(シリアルモードレジスタ)
+    volatile uint8 brr;  // ボーレートの設定(ビットレートレジスタ)
+    volatile uint8 scr;  // 送受信の有効/無効など(シリアルコントロールレジスタ)
+    volatile uint8 tdr;  // 送信したい1文字を書き込む(トランスミットデータレジスタ)
+    volatile uint8 ssr;  // 送信完了/受信完了などを表す(シリアルステータスレジスタ)
+    volatile uint8 rdr;  // 受信した1文字を読みだす(レシーブデータレジスタ)
+    volatile uint8 scmr; // (スマートカードモードレジスタ) 
 };
 
 #define H8_3069F_SCI_SMR_CKS_PER1  (0<<0)
@@ -59,7 +59,7 @@ int serial_init(int index)
 {
     volatile struct h8_3069f_sci *sci = regs[index].sci;
 
-    sci->scr = 0;
+    sci->scr = 0; /* コントロールレジスタの初期化 */
     sci->smr = 0;
     sci->brr = 64; /* 20MHzのクロックから9600bpsを生成(25MHzの場合は80にする) */
     sci->scr = H8_3069F_SCI_SCR_RE | H8_3069F_SCI_SCR_TE; /* 送受信可能 */
