@@ -1,6 +1,6 @@
     .h8300h
     .section .text
-    .global _stert
+    .global _start
 #   .type   _start,@function
 _start:
     mov.l   #0xffff00,sp
