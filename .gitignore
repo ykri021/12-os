@@ -1,3 +1,4 @@
 # make で生成されるファイルを除外
 *.o
 kzload*
+tools/
