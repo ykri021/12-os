@@ -1,6 +1,7 @@
 #include "defines.h"
 #include "serial.h"
 #include "xmodem.h"
+#include "elf.h"
 #include "lib.h"
 
 volatile int value = 10;
@@ -55,19 +56,6 @@ static void wait()
     ;
 }
 
-int global_data = 0x10; //.dataセクションへ
-int global_bss; //.bssセクションへ
-static int static_data = 0x20; //.dataセクションへ
-static int static_bss; //.bssセクションへ
-
-static void printval(void)
-{
-  puts("global_data= ");  putxval(global_data, 0);  puts("\n");
-  puts("global_bss= ");   putxval(global_bss, 0);   puts("\n");
-  puts("static_data= ");  putxval(static_data, 0);  puts("\n");
-  puts("static_bss= ");   putxval(static_bss, 0);   puts("\n");
-}
-
 int main(void)
 {
     static char buf[16];
@@ -96,6 +84,8 @@ int main(void)
         putxval(size, 0);
         puts("\n");
         dump(loadbuf, size);
+      } else if (!strcmp(buf, "run")) { /* ELF形式ファイルの実行 */
+        elf_load(loadbuf); /* メモリ上に展開（ロード） */
       } else {
         puts("unknown\n");
       }
