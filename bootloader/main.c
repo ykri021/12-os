@@ -62,6 +62,8 @@ int main(void)
     static long size = -1;
     static unsigned char *loadbuf = NULL;
     extern int buffer_start; /* リンカスクリプトで定義されているバッファ */
+    char * entry_point;
+    void (*f)(void);
 
     init();
     puts("kzload (kozos boot loader) started.\n");
@@ -77,7 +79,7 @@ int main(void)
         if (size < 0) {
           puts("\nXMODEM recieve error!\n");
         } else {
-          puts("\n XMODEM recieve succeeded.\n");
+          puts("\nXMODEM recieve succeeded.\n");
         }
       } else if (!strcmp(buf, "dump")) { /* メモリの16進ダンプ出力 */
         puts("size: ");
@@ -85,7 +87,17 @@ int main(void)
         puts("\n");
         dump(loadbuf, size);
       } else if (!strcmp(buf, "run")) { /* ELF形式ファイルの実行 */
-        elf_load(loadbuf); /* メモリ上に展開（ロード） */
+        entry_point = elf_load(loadbuf); /* メモリ上に展開（ロード） */
+        if (!entry_point) {
+          puts("run error!\n");
+        } else {
+          puts("starting from entry point: ");
+          putxval((unsigned long)entry_point, 0);
+          puts("\n");
+          f = (void (*) (void))entry_point;
+          f(); /* ここで、ロードしたプログラムに処理を渡す */
+          /* ここには返ってこない */
+        }
       } else {
         puts("unknown\n");
       }
